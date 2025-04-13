@@ -18,11 +18,12 @@ For Assignment 1:
 
 This structured approach helps create comprehensive test suites to verify system behavior. Here's how to implement it:
 
-## Step 1: Map Actions and Outcomes
+## Step 1: Identify actions and expected outcomes
 
-- **Objective**: Identify all possible interactions with the system
+- **Objective**: Identify all possible interactions with the system under test 
 - **Process**:
   - List user actions (clicks, inputs, etc.)
+  - List possible expected outcomes
   - Note system triggers (API calls, scheduled jobs)
 - **Example** (for login feature):
   - Action: User submits credentials
@@ -32,11 +33,11 @@ This structured approach helps create comprehensive test suites to verify system
 
 - **Objective**: Determine factors affecting outcomes
 - **Process**:
-  - Identify all conditions that will affect the outcome of the action.
+  - Identify all conditions (parameters, system states) that will affect the outcome of the action.
 - **Techniques**:
-  The following teckniques are usefule for deciding what input values are relevant for the test case:
-  - **Boundary Value Analysis**: Test edge cases (min/max values)
-  - **Equivalence Partitioning**: Group similar inputs
+  The following techniques are usefule for deciding what input values are relevant for the test case:
+  - **Boundary Value Analysis**: Test edge cases (value at boundaries, +/- 1)
+  - **Equivalence Partitioning**: Define conditions based on expected outcomes
 - **Example** (for age validation):
   - Boundaries: -1, 0, 17, 18, 120, 121
   - Partitions: Invalid (<0), Underage (0-17), Valid (18-120)
@@ -46,29 +47,25 @@ This structured approach helps create comprehensive test suites to verify system
 - **Objective**: Create test scenarios
 - **Process**:
 
-  - Create all combinations or filter for relevant
-    combinations based on domain knowledge.
+  - Create all combinations or filter for relevant combinations based on domain knowledge. 
 
 - **Example** (for log in authentication):
-
-- 1. **Valid password + Invalid username**
-
-- 2. **Invalid password + Valid username**
-
-- 3. **Invalid password + Invalid username**
-
-- 4. **Valid password + Valid username**
+  1. **Valid password + Invalid username**
+  2. **Invalid password + Valid username**
+  3. **Invalid password + Invalid username**
+  4. **Valid password + Valid username**
 
 ## Step 4: Define Expected Outcomes
 
-- **Objective**: To clearly define the expected behaviour of the system.
-- **Process**:
-  - For each combination assign the expected outcome
+  - **Objective**: Clearly define the expected behavior of the system.
+  - **Process**:
+    - For each combination, assign the expected outcome.
+    - Combinations can be collapsed if various values of the condition do not impact the expected outcome.
   - **Example** (for the combinations in Step 3 example):
-  - 1. Failure. Ensures the system correctly denies access when the username is incorrect, even if the password is valid.
-  - 2.  Failure. Checks that the system rejects login attempts when the password is incorrect, even if the username is correct.
-  - 3. Failure. Verifies that the system does not authenticate users when both credentials are incorrect.
-  - 4. Successful login. Verifies that the system does authenticate users when both credentials are correct.
+    1. **Failure**: Ensures the system correctly denies access when the username is incorrect, even if the password is valid.
+    2. **Failure**: Checks that the system rejects login attempts when the password is incorrect, even if the username is correct.
+    3. **Failure**: Verifies that the system does not authenticate users when both credentials are incorrect.
+    4. **Successful login**: Verifies that the system does authenticate users when both credentials are correct.
 
 ## Why This Method Works
 
@@ -102,6 +99,7 @@ This structured approach helps create comprehensive test suites to verify system
   - Invalid (age < 0 or > 120),
   - Underage (0 ≤ age < 18),
   - Valid (18 ≤ age ≤ 120).
+  - Test values is then selected in each of these categories, e.g. -5, 5, 20 and 130.
 
 ---
 
@@ -129,9 +127,8 @@ This structured approach helps create comprehensive test suites to verify system
 
 **Boundary Values (BVA):**
 
-- **Impossible ↔ Underage**: Test -1, 0, 1
-- **Underage ↔ Valid**: Test 17, 18
-- **Valid ↔ Impossible**: Test 120, 121
+- **Boundary values**: 0, 120, 18
+- **Boundary values analysis**: -1,0,1, 119, 120, 121, 17, 18, 19
 
 **Test Cases:**  
 | Value | Expected Result |  
@@ -141,6 +138,8 @@ This structured approach helps create comprehensive test suites to verify system
 | 1 | Underage |  
 | 17 | Underage |  
 | 18 | Valid |  
+| 19 | Valid |  
+| 119 | Valid |  
 | 120 | Valid |  
 | 121 | Impossible |
 
@@ -148,7 +147,20 @@ This structured approach helps create comprehensive test suites to verify system
 
 ## 3. Designing Test Cases
 
-### Scenario
+This answer will follow the design test technique to identify all relevant test cases for the scenario:
+- Step 1: Identify actions and expected outcomes
+- Step 2: Identify Conditions
+- Step 3: Determine Combinations
+- Step 4: Define Expected Outcomes
+
+A *test case* is a precise description of a single test. At minimum it contains:
+- ID
+- Action: an activity of the system under test that we evalaute
+- Inputs: the list of conditions that represent the situation
+- Expected outcome: the behavior the system is expected to exhibit given the inputs  
+
+
+### The scenario
 
 To open the door at the entrance of a company building from the outside, one must either:
 
@@ -156,7 +168,10 @@ To open the door at the entrance of a company building from the outside, one mus
 - Have the door automatically unlocked by the porter
 - The door can always be opened from the inside
 
-### Identification of Conditions and Actions
+### Step 1: Identification of Conditions and Actions
+
+1. **Action(s)** and **expected outcome**:
+   - door *can be* [opened, not opened]
 
 #### Actions:
 
@@ -169,24 +184,104 @@ To open the door at the entrance of a company building from the outside, one mus
 
 - Door opens; door remains closed
 
-#### Conditions:
+### Step 2: Identify Conditions:
 
-- 1. Card-validity
-- 1. Porter or regular person
-- 1. Inside or outside
+2. **Condition(s)**:
+   - card *can be* [valid; invalid; not present]
+   - duration at sensor *can be* [less than two seconds, two seconds or more]
+   - door opener location *can be* [inside; outside]
+   - porter action *can be* [opened, not openend]
 
-### Valid Combinations and Expected Outcomes
+### Step 3-4: Determine Combinations and Expected Outcomes
 
-| Card Valid | Role    | Location | Time at sensor          | Expected Outcome    |
-| ---------- | ------- | -------- | ----------------------- | ------------------- |
-| Yes        | Regular | Outside  | => 2                    | Door opens          |
-| No         | Regular | Outside  | < 2                     | Door remains closed |
-| ???        | Porter  | Outside  | ???                     | Door opens          |
-| ???        | Porter  | Outside  | ???                     | Door opens (maybe?) |
-| —          | Anyone  | Inside   | ??? Presses exit button | Door opens          |
+Test cases are collapsed below because certain parameters doesn't matter for the door, given some circumstances (e.g. if card is invalid, the time at sensor is not relevant). 
+
+| # | Card        | Duration at sensor      | Door opener location | Porter action | Door       |
+|---|-------------|-------------------------|---------------------|--------------|------------|
+| 1 | valid       | two seconds or more     | outside             | not opened   | opened     |
+| 2 | valid       | less than two seconds   | outside             | not opened   | not opened |
+| 3 | invalid     | -                       | outside             | not opened   | not opened |
+| 4 | not present | -                       | outside             | not opened   | not opened |
+| 5 | -           | -                       | outside             | opened       | opened     |
+| 6 | -           | -                       | inside              | -            | opened     |
+
+
+---
+
+# Assignment 2: Unit Testing
+
+## 1. Mocking
+
+### Explanation of Mocking
+
+[Your explanation of mocking here]
+
+### Purpose of Mocking in Unit Testing
+
+[Explanation of purpose here]
+
+## 2. Unit Testing for User Controller
+
+### Test Cases for get_user_by_email Function
+
+[List your test cases here]
+
+### Implementation
+
+Link to test file in repository: [Insert link here]
+
+### Test Execution Output
+
+[Screenshot or text output here]
+
+### Test Coverage Interpretation
+
+[Your interpretation here]
+
+---
+
+# Assignment 3: Integration Testing
+
+## 1. Test Levels
+
+### Difference in Scope Between Unit and Integration Tests
+
+[Your explanation here]
+
+### Different Purposes of Mocking in Unit vs. Integration Tests
+
+[Your explanation here]
+
+## 2. Integration Testing for DAO and MongoDB
+
+### List of Test Cases
+
+[List test cases derived using test design technique]
+
+### Pytest Fixture for Database Interaction
+
+```python
+# Your fixture code here
+```
+
+### Implementation of Test Cases
+
+Link to test file(s) in repository: [Insert link here]
+
+### Test Execution Results
+
+```
+# Console output from pytest
+```
+
+### Evaluation Statement
+
+[Your evaluation of the test results]
 
 ---
 
 ## References
 
-[List any external sources used]
+Lecture 1
+Lecture 2
+
