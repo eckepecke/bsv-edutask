@@ -20,7 +20,7 @@ This structured approach helps create comprehensive test suites to verify system
 
 ## Step 1: Identify actions and expected outcomes
 
-- **Objective**: Identify all possible interactions with the system under test 
+- **Objective**: Identify all possible interactions with the system under test
 - **Process**:
   - List user actions (clicks, inputs, etc.)
   - List possible expected outcomes
@@ -47,7 +47,7 @@ This structured approach helps create comprehensive test suites to verify system
 - **Objective**: Create test scenarios
 - **Process**:
 
-  - Create all combinations or filter for relevant combinations based on domain knowledge. 
+  - Create all combinations or filter for relevant combinations based on domain knowledge.
 
 - **Example** (for log in authentication):
   1. **Valid password + Invalid username**
@@ -57,15 +57,15 @@ This structured approach helps create comprehensive test suites to verify system
 
 ## Step 4: Define Expected Outcomes
 
-  - **Objective**: Clearly define the expected behavior of the system.
-  - **Process**:
-    - For each combination, assign the expected outcome.
-    - Combinations can be collapsed if various values of the condition do not impact the expected outcome.
-  - **Example** (for the combinations in Step 3 example):
-    1. **Failure**: Ensures the system correctly denies access when the username is incorrect, even if the password is valid.
-    2. **Failure**: Checks that the system rejects login attempts when the password is incorrect, even if the username is correct.
-    3. **Failure**: Verifies that the system does not authenticate users when both credentials are incorrect.
-    4. **Successful login**: Verifies that the system does authenticate users when both credentials are correct.
+- **Objective**: Clearly define the expected behavior of the system.
+- **Process**:
+  - For each combination, assign the expected outcome.
+  - Combinations can be collapsed if various values of the condition do not impact the expected outcome.
+- **Example** (for the combinations in Step 3 example):
+  1. **Failure**: Ensures the system correctly denies access when the username is incorrect, even if the password is valid.
+  2. **Failure**: Checks that the system rejects login attempts when the password is incorrect, even if the username is correct.
+  3. **Failure**: Verifies that the system does not authenticate users when both credentials are incorrect.
+  4. **Successful login**: Verifies that the system does authenticate users when both credentials are correct.
 
 ## Why This Method Works
 
@@ -148,17 +148,18 @@ This structured approach helps create comprehensive test suites to verify system
 ## 3. Designing Test Cases
 
 This answer will follow the design test technique to identify all relevant test cases for the scenario:
+
 - Step 1: Identify actions and expected outcomes
 - Step 2: Identify Conditions
 - Step 3: Determine Combinations
 - Step 4: Define Expected Outcomes
 
-A *test case* is a precise description of a single test. At minimum it contains:
+A _test case_ is a precise description of a single test. At minimum it contains:
+
 - ID
 - Action: an activity of the system under test that we evalaute
 - Inputs: the list of conditions that represent the situation
-- Expected outcome: the behavior the system is expected to exhibit given the inputs  
-
+- Expected outcome: the behavior the system is expected to exhibit given the inputs
 
 ### The scenario
 
@@ -171,7 +172,7 @@ To open the door at the entrance of a company building from the outside, one mus
 ### Step 1: Identification of Conditions and Actions
 
 1. **Action(s)** and **expected outcome**:
-   - door *can be* [opened, not opened]
+   - door _can be_ [opened, not opened]
 
 #### Actions:
 
@@ -187,24 +188,23 @@ To open the door at the entrance of a company building from the outside, one mus
 ### Step 2: Identify Conditions:
 
 2. **Condition(s)**:
-   - card *can be* [valid; invalid; not present]
-   - duration at sensor *can be* [less than two seconds, two seconds or more]
-   - door opener location *can be* [inside; outside]
-   - porter action *can be* [opened, not openend]
+   - card _can be_ [valid; invalid; not present]
+   - duration at sensor _can be_ [less than two seconds, two seconds or more]
+   - door opener location _can be_ [inside; outside]
+   - porter action _can be_ [opened, not openend]
 
 ### Step 3-4: Determine Combinations and Expected Outcomes
 
-Test cases are collapsed below because certain parameters doesn't matter for the door, given some circumstances (e.g. if card is invalid, the time at sensor is not relevant). 
+Test cases are collapsed below because certain parameters doesn't matter for the door, given some circumstances (e.g. if card is invalid, the time at sensor is not relevant).
 
-| # | Card        | Duration at sensor      | Door opener location | Porter action | Door       |
-|---|-------------|-------------------------|---------------------|--------------|------------|
-| 1 | valid       | two seconds or more     | outside             | not opened   | opened     |
-| 2 | valid       | less than two seconds   | outside             | not opened   | not opened |
-| 3 | invalid     | -                       | outside             | not opened   | not opened |
-| 4 | not present | -                       | outside             | not opened   | not opened |
-| 5 | -           | -                       | outside             | opened       | opened     |
-| 6 | -           | -                       | inside              | -            | opened     |
-
+| #   | Card        | Duration at sensor    | Door opener location | Porter action | Door       |
+| --- | ----------- | --------------------- | -------------------- | ------------- | ---------- |
+| 1   | valid       | two seconds or more   | outside              | not opened    | opened     |
+| 2   | valid       | less than two seconds | outside              | not opened    | not opened |
+| 3   | invalid     | -                     | outside              | not opened    | not opened |
+| 4   | not present | -                     | outside              | not opened    | not opened |
+| 5   | -           | -                     | outside              | opened        | opened     |
+| 6   | -           | -                     | inside               | -             | opened     |
 
 ---
 
@@ -214,11 +214,31 @@ Test cases are collapsed below because certain parameters doesn't matter for the
 
 ### Explanation of Mocking
 
-[Your explanation of mocking here]
+Mocking is a technique used in software testing for simulating dependencies like method calls, external services, API-calls. In a unit test we want to test an isolated part of the code. When a test relies on variables that are unavailable or unpredictabe like an API-call for today's weather, mocking saves the day by replacing these dependencies with the variables of our choice. This allows tests to focus exclusively on the logic of the logic we are trying to test.
 
 ### Purpose of Mocking in Unit Testing
 
-[Explanation of purpose here]
+The main purpose of Mocking is to **isolate the code under test** by removing external dependencies. There are also other benefits that come with it. Here are a few:
+
+#### Speed & Efficiency
+
+- **Skip slow tasks** (like waiting for network calls) to make tests run faster.  
+  _Example:_ Avoid real API calls or database operations that take a long time to complete.
+
+#### Consistency
+
+- **Prevent random failures** caused by things you can’t control (like a broken internet connection or changing data).  
+  _Example:_ Use fake data so your test works the same way every time.
+
+#### Verification
+
+- **Check if your code talks to other parts correctly**.  
+  _Example:_ Confirm if a method was called with the right inputs, like checking if `sendEmail("user@test.com")` happened.
+
+#### Control & Predictability
+
+- Lets you **create fake scenarios** (like errors or special cases) to see how your code reacts.  
+  _Example:_ Make a fake API return an error code (like "500") to test your error-handling code.
 
 ## 2. Unit Testing for User Controller
 
@@ -284,4 +304,3 @@ Link to test file(s) in repository: [Insert link here]
 
 Lecture 1
 Lecture 2
-
