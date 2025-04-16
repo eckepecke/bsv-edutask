@@ -10,7 +10,7 @@
 ## 1. Group work
 
 1. Names of the two team members: Erik O., Karl W.
-2. Group number on Canvas: 25
+2. Group number on Canvas: 24
 
 ## 2. Testing system
 
