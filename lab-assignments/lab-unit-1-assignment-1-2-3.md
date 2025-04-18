@@ -244,21 +244,25 @@ The main purpose of Mocking is to **isolate the code under test** by removing ex
 
 ### Test Cases for get_user_by_email Function
 
-[List your test cases here]
+| Email        | Format    | Exists    | Outcome |
+| ------------ | --------- | --------- | ------- |
+| Provided     | Correct   | Yes, once | Success |
+| Provided     | Correct   | Yes, more | Success |
+| Provided     | Correct   | No        | Denied  |
+| Provided     | Incorrect | -         | Denied  |
+| Not provided | -         | -         | Denied  |
 
 ### Implementation
 
-Link to test file in repository: [Insert link here]
+Link to test file in repository: https://github.com/eckepecke/bsv-edutask/blob/master/backend/test/test_usercontroller.py
 
 ### Test Execution Output
 
-[Screenshot or text output here]
+![Alt text](./test_results_1.png)
 
 ### Test Coverage Interpretation
 
-[Your interpretation here]
-
----
+All 4 test cases in the test file passed. The coverage table gives an overview of what lines of code has been tested. We can see that the file in question, usecontroller.py, has tests covering 79% of the lines. The uncoverd lines are listed in the missing column, refer to the updated method that does not yet have any test. This means that all statements in the get_user_by_email has been covered with at least one test.
 
 # Assignment 3: Integration Testing
 
