@@ -244,13 +244,13 @@ The main purpose of Mocking is to **isolate the code under test** by removing ex
 
 ### Test Cases for get_user_by_email Function
 
-| Email        | Format    | Exists    | Outcome |
-| ------------ | --------- | --------- | ------- |
-| Provided     | Correct   | Yes, once | Success |
-| Provided     | Correct   | Yes, more | Success |
-| Provided     | Correct   | No        | Denied  |
-| Provided     | Incorrect | -         | Denied  |
-| Not provided | -         | -         | Denied  |
+| Email        | Format    | Exists    | Outcome           |
+| ------------ | --------- | --------- | ----------------- |
+| Provided     | Correct   | Yes, once | User returned     |
+| Provided     | Correct   | Yes, more | User returned     |
+| Provided     | Correct   | No        | None returned     |
+| Provided     | Incorrect | -         | ValueError raised |
+| Not provided | -         | -         | ValueError raised |
 
 ### Implementation
 
@@ -272,7 +272,7 @@ The test coverage output shows that 79% of the lines in the UserController class
 
 ### Difference in Scope Between Unit and Integration Tests
 
-[Your explanation here]
+Unit testing verifies that a single component (e.g., a class, method, or function) behaves as expected in isolation, often by mocking external dependencies. Integration testing checks if multiple components or systems work together correctly, validating interactions, data flow, and dependencies (e.g., APIs, databases).
 
 ### Different Purposes of Mocking in Unit vs. Integration Tests
 
