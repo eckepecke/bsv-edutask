@@ -258,11 +258,13 @@ Link to test file in repository: https://github.com/eckepecke/bsv-edutask/blob/m
 
 ### Test Execution Output
 
-![Alt text](./test_results_1.png)
+![Alt text](./results_tests.png)
+
+The implementation of the get_user_by_email is flawed. Docstring claims it will return None when user does not exist. Therefore the failure occurs during the tests.
 
 ### Test Coverage Interpretation
 
-All 4 test cases in the test file passed. The coverage table gives an overview of what lines of code has been tested. We can see that the file in question, usecontroller.py, has tests covering 79% of the lines. The uncoverd lines are listed in the missing column, refer to the updated method that does not yet have any test. This means that all statements in the get_user_by_email has been covered with at least one test.
+The test coverage output shows that 79% of the lines in the UserController class, have been executed at least once. The lines 42-46 have been marked as missing, there is no test validating this part of the code. These lines refer to the update method.
 
 # Assignment 3: Integration Testing
 
