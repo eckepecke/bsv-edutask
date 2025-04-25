@@ -276,7 +276,7 @@ Unit testing verifies that a single component (e.g., a class, method, or functio
 
 ### Different Purposes of Mocking in Unit vs. Integration Tests
 
-[Your explanation here]
+Mocking in integration testing, is used to isolate external systems or control the environment (like simulating a third-party API or a database), not the code units themselves. The goal in integration testing is to test how multiple components work together, but still may avoid hitting real external systems to improve test reliability and speed.
 
 ## 2. Integration Testing for DAO and MongoDB
 
