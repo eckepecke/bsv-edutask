@@ -348,6 +348,8 @@ The template to arrive at test cases was used, see Appendix.
 - 5.  ... (1) the data* for the new object contains all required properties, (2) every property complies to the bson data type constraint, (3) and **there are no** values of a property flagged with 'uniqueItems'.
 - 6. ... (1) **non-compliant data type**, (2) every property complies to the bson data type constraint, (3) and the values of a property flagged with 'uniqueItems' are unique among all documents of the collection.
 
+**What about an empty data param?**
+
 **data -- a dict containing key-value pairs compliant to the validator*
 
 - **Expected Outcomes**:
