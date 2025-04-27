@@ -305,11 +305,12 @@ Integration testing becomes especially relevant when working with external syste
 
 Creating a new object in a collection of a Mongo database is regulated by validators, which constrain the otherwise very unrestricted process of inserting items into a Mongo database1.
 
- **We want to make sure that—given a configuration specified in a validator—the object creation process will succeed only if the input data is compliant to the validators.**
+**We want to make sure that—given a configuration specified in a validator—the object creation process will succeed only if the input data is compliant to the validators.**
 
-__Design and implement integration tests for the communication between the data access object DAO (backend/src/util/dao.py) and the Mongo database focusing on the create method. Follow best practices for integration test design and utilize mocking where applicable.__
+**Design and implement integration tests for the communication between the data access object DAO (backend/src/util/dao.py) and the Mongo database focusing on the create method. Follow best practices for integration test design and utilize mocking where applicable.**
 
 Deliverables: The submission to this exercise must contain all of the following:
+
 1. A list of test cases which have been derived using the test design technique.
 2. A pytest fixture allowing interaction with the database without disturbing production code or data.
 3. An implementation of the test cases in pytest. Provide a link to the file(s) in your forked repository, which contains your test code.
@@ -338,22 +339,22 @@ The template to arrive at test cases was used, see Appendix.
 
         raises:
             WriteError - in case at least one of the validator criteria is violated
-       
+
 - **Objective**: Clearly define the actions and their expected results.
 - **Actions**:
-- 1. Creating object with (1) the data* for the new object contains all required properties, (2) every property complies to the bson data type constraint, (3) and the values of a property flagged with 'uniqueItems' are unique among all documents of the collection.
-- 2. ... (1) the data* for the new object **doesn't** contain all required properties, (2) every property complies to the bson data type constraint, (3) and the values of a property flagged with 'uniqueItems' are unique among all documents of the collection.
-- 3. ... (1) the data* for the new object contains all required properties, (2) **not** very property complies to the bson data type constraint, (3) and the values of a property flagged with 'uniqueItems' are unique among all documents of the collection.
-- 4.  ... (1) the data* for the new object contains all required properties, (2) every property complies to the bson data type constraint, (3) and the values of a property flagged with 'uniqueItems' are **not** unique among all documents of the collection.
-- 5.  ... (1) the data* for the new object contains all required properties, (2) every property complies to the bson data type constraint, (3) and **there are no** values of a property flagged with 'uniqueItems'.
+- 1. Creating object with (1) the data\* for the new object contains all required properties, (2) every property complies to the bson data type constraint, (3) and the values of a property flagged with 'uniqueItems' are unique among all documents of the collection.
+- 2. ... (1) the data\* for the new object **doesn't** contain all required properties, (2) every property complies to the bson data type constraint, (3) and the values of a property flagged with 'uniqueItems' are unique among all documents of the collection.
+- 3. ... (1) the data\* for the new object contains all required properties, (2) **not** very property complies to the bson data type constraint, (3) and the values of a property flagged with 'uniqueItems' are unique among all documents of the collection.
+- 4.  ... (1) the data\* for the new object contains all required properties, (2) every property complies to the bson data type constraint, (3) and the values of a property flagged with 'uniqueItems' are **not** unique among all documents of the collection.
+- 5.  ... (1) the data\* for the new object contains all required properties, (2) every property complies to the bson data type constraint, (3) and **there are no** values of a property flagged with 'uniqueItems'.
 - 6. ... (1) **non-compliant data type**, (2) every property complies to the bson data type constraint, (3) and the values of a property flagged with 'uniqueItems' are unique among all documents of the collection.
 
 **What about an empty data param?**
 
-**data -- a dict containing key-value pairs compliant to the validator*
+\*_data -- a dict containing key-value pairs compliant to the validator_
 
 - **Expected Outcomes**:
-  - Object returned with the newly created MongoDB document (parsed to a JSON object) containing the input data and an _id attribute.
+  - Object returned with the newly created MongoDB document (parsed to a JSON object) containing the input data and an \_id attribute.
   - Raises WriteError
   - Raises TypeError (?) (on non-compliant data type?)
 
@@ -361,6 +362,7 @@ The template to arrive at test cases was used, see Appendix.
 
 - **Objective**: List all conditions that influence the outcomes.
 - **Conditions**:
+
   - Complete data set : can be complete, or incomplete
   - Complies with type constraints : compliant or not
   - Unique constraints:
@@ -376,21 +378,31 @@ The template to arrive at test cases was used, see Appendix.
 
 - **Objective**: Combine conditions to create test scenarios.
 - **Combinations**:
-  | #   | Data set    | Type constraint | Unique constraint | Arg type    | Expected Outcome |
-  | --- | ----------- | --------------- | ----------------- | ----------- | ---------------- |
-  | --- | ----------- | --------------- | ----------------- | ----------- | ---------------- |
-  | --- | ----------- | --------------- | ----------------- | ----------- | ---------------- |
-  | --- | ----------- | --------------- | ----------------- | ----------- | ---------------- |
-  | --- | ----------- | --------------- | ----------------- | ----------- | ---------------- |
-  | --- | ----------- | --------------- | ----------------- | ----------- | ---------------- |
+
+| #   | Data Set   | Type Constraint | Unique Constraint | Arg Type   | Expected Outcome    |
+| --- | ---------- | --------------- | ----------------- | ---------- | ------------------- |
+| 1   | Complete   | Compliant       | Unique            | `dict`     | Document created    |
+| 2   | Incomplete | Compliant       | Unique            | `dict`     | `WriteError` raised |
+| 3   | Complete   | Non-compliant   | Unique            | `dict`     | `WriteError` raised |
+| 4   | Complete   | Compliant       | Non-unique        | `dict`     | `WriteError` raised |
+| 5   | Complete   | Compliant       | Unique            | Non-`dict` | `TypeError` raised  |
+| 6   | Incomplete | Non-compliant   | Unique            | `dict`     | `WriteError` raised |
+| 7   | Complete   | Non-compliant   | Non-unique        | `dict`     | `WriteError` raised |
+| 8   | Incomplete | Non-compliant   | Non-unique        | `dict`     | `WriteError` raised |
 
 ##### Step 4: Define Expected Outcomes
 
 - **Objective**: Assign expected results to each combination.
 - **Expected Outcomes**:
-  - Combination [#]: [Expected Outcome]
-  - Combination [#]: [Expected Outcome]
-  - ...
+  - Combination [1]: Document created
+  - Combination [2]: WriteError
+  - Combination [3]: WriteError
+  - Combination [4]: WriteError
+  - Combination [5]: TypeError
+  - Combination [6]: WriteError
+  - Combination [7]: WriteError
+  - Combination [8]: WriteError
+  - Combination [9]: WriteError
 
 ### Pytest Fixture for Database Interaction
 
@@ -420,11 +432,11 @@ Lecture 1
 Lecture 2
 Lecture 3
 
-## Appendix 
+## Appendix
 
 ### Template for Test Design Technique
 
-Based upon our description of the test design technique, Copilot was used to generate a template for the test design technique. The template follows here. This template was used as a support for Assignment 3.2. 
+Based upon our description of the test design technique, Copilot was used to generate a template for the test design technique. The template follows here. This template was used as a support for Assignment 3.2.
 
 #### Step 1: Identify Actions and Expected Outcomes
 
@@ -453,7 +465,7 @@ Based upon our description of the test design technique, Copilot was used to gen
 
 - **Objective**: Combine conditions to create test scenarios.
 - **Combinations**:
-  | #   | Condition 1 | Condition 2 | ... | Expected Outcome |
+  | # | Condition 1 | Condition 2 | ... | Expected Outcome |
   | --- | ----------- | ----------- | --- | ---------------- |
 
 #### Step 4: Define Expected Outcomes
@@ -466,8 +478,9 @@ Based upon our description of the test design technique, Copilot was used to gen
 
 #### Example Test Case Template
 
-| Test Case ID | Action         | Conditions         | Expected Outcome |
-| ------------ | -------------- | ------------------ | ---------------- |
-| TC-01        | [Action]       | [Condition values] | [Outcome]        |
-| TC-02        | [Action]       | [Condition values] | [Outcome]        |
+| Test Case ID | Action   | Conditions         | Expected Outcome |
+| ------------ | -------- | ------------------ | ---------------- |
+| TC-01        | [Action] | [Condition values] | [Outcome]        |
+| TC-02        | [Action] | [Condition values] | [Outcome]        |
+
 [List test cases derived using test design technique]
