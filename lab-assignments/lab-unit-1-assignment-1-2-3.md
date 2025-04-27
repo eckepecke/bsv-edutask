@@ -320,7 +320,7 @@ Deliverables: The submission to this exercise must contain all of the following:
 
 #### Using the template for Test Design Technique
 
-The template to arrive at test cases was used, see Appendix.
+The template to arrive at test cases was used, see Appendix. The docstring for the function was used to go through the template.
 
 ##### Step 1: Identify Actions and Expected Outcomes
 
@@ -328,17 +328,6 @@ The template to arrive at test cases was used, see Appendix.
    - create object _can_ [return with correct data, return with incorrect data, raise WriteError, raise TypeError]
 
 #### Actions:
-
-        Creates a new document in the collection associated to this data access object. The creation of a new document must comply to the corresponding validator, which defines the data structure of the collection. In particular, the validator has to make sure that: (1) the data for the new object contains all required properties, (2) every property complies to the bson data type constraint (see https://www.mongodb.com/docs/manual/reference/bson-types/, though we currently only consider Strings and Booleans), (3) and the values of a property flagged with 'uniqueItems' are unique among all documents of the collection.
-
-        parameters:
-            data -- a dict containing key-value pairs compliant to the validator
-
-        returns:
-            object -- the newly created MongoDB document (parsed to a JSON object) containing the input data and an _id attribute
-
-        raises:
-            WriteError - in case at least one of the validator criteria is violated
 
 - **Objective**: Clearly define the actions and their expected results.
 - **Actions**:
@@ -389,6 +378,11 @@ The template to arrive at test cases was used, see Appendix.
 | 6   | Incomplete | Non-compliant   | Unique            | `dict`     | `WriteError` raised |
 | 7   | Complete   | Non-compliant   | Non-unique        | `dict`     | `WriteError` raised |
 | 8   | Incomplete | Non-compliant   | Non-unique        | `dict`     | `WriteError` raised |
+| 9   | Complete   | Non-compliant   | Unique            | Non-`dict` | `TypeError` raised  |
+| 10  | Complete   | Non-compliant   | Non-unique        | Non-`dict` | `TypeError` raised  |
+| 11  | Incomplete | Non-compliant   | Unique            | Non-`dict` | `TypeError` raised  |
+| 12  | Incomplete | Non-compliant   | Non-unique        | Non-`dict` | `TypeError` raised  |
+
 
 ##### Step 4: Define Expected Outcomes
 
@@ -402,35 +396,120 @@ The template to arrive at test cases was used, see Appendix.
   - Combination [6]: WriteError
   - Combination [7]: WriteError
   - Combination [8]: WriteError
-  - Combination [9]: WriteError
+  - Combination [9]: TypeError
+  - Combination [10]: TypeError
+  - Combination [11]: TypeError
+  - Combination [12]: TypeError
+
+##### Test cases
+
+Combination 6-12 is excluded as its individual pieces are tested before, and expected to fail. For example: 6 is tested with 2, and is expected to fail at one point, and we will not learn more about the failure by this test.
+
+| # | Data Set   | Type Constraint | Unique Constraint | Arg Type   | Expected Outcome    | Function Name                       | Status       |
+|---|------------|-----------------|-------------------|------------|---------------------|-------------------------------------|--------------|
+| 1 | Complete   | Compliant       | Unique            | `dict`     | Document created    | `test_create_success`               | Implemented  |
+| 2 | Incomplete | Compliant       | Unique            | `dict`     | `WriteError` raised | `test_create_incomplete`            | Implemented  |
+| 3 | Complete   | Non-compliant   | Unique            | `dict`     | `WriteError` raised | `test_create_type_constraint_violation` | Implemented |
+| 4 | Complete   | Compliant       | Non-unique        | `dict`     | `WriteError` raised | `test_create_unique_constraint_violation` | Implemented |
+| 5 | Complete   | Compliant       | Unique            | Non-`dict` | `TypeError` raised  | `test_create_invalid_arg_type`      | Implemented |
 
 ### Pytest Fixture for Database Interaction
 
 ```python
-# Your fixture code here
+@pytest.fixture(autouse=True)
+def clean_database():
+    mongo_url = os.getenv("MONGO_URL", "mongodb://root:root@mongodb:27017")
+    db_name = os.getenv("MONGO_INITDB_DATABASE", "rootDb")
+
+    client = pymongo.MongoClient(mongo_url)
+    db = client[db_name]
+
+    yield
+    db.drop_collection("test_users")
 ```
 
 ### Implementation of Test Cases
 
-Link to test file(s) in repository: [Insert link here]
+[Link to test file(s) in repository](https://github.com/eckepecke/bsv-edutask/blob/master/backend/test/util/test_dao.py)
 
 ### Test Execution Results
 
 ```
 # Console output from pytest
+(base) karl@supergo:~/rsync/dbwebb/sysver/lab-team-work$ docker exec -it edutask-backend pytest test/util -v
+========================================== test session starts ==========================================
+platform linux -- Python 3.10.12, pytest-7.2.2, pluggy-1.5.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+rootdir: /app, configfile: pytest.ini
+plugins: cov-4.0.0
+collected 5 items                                                                                       
+
+test/util/test_dao.py::test_create_success PASSED                                                 [ 20%]
+test/util/test_dao.py::test_create_incomplete PASSED                                              [ 40%]
+test/util/test_dao.py::test_create_type_constraint_violation PASSED                               [ 60%]
+test/util/test_dao.py::test_create_unique_constraint_violation FAILED                             [ 80%]
+test/util/test_dao.py::test_create_invalid_arg_type PASSED                                        [100%]
+
+=============================================== FAILURES ================================================
+________________________________ test_create_unique_constraint_violation ________________________________
+
+dao_fixture = <src.util.dao.DAO object at 0x7f02619d5840>
+
+    def test_create_unique_constraint_violation(dao_fixture):
+        # Data with unique constraint violation: Duplicate 'email'
+        """Assert that the validator raises WriteError when unique constraint is violated."""
+    
+        # First entry
+        first_data = {
+            "name": "Alice",
+            "email": "alice@example.com"
+        }
+    
+        # Create the first entry
+        dao_fixture.create(first_data)
+        # Duplicate data
+        duplicate_data = {
+            "name": "Bob",
+            "email": "alice@example.com"
+        }
+    
+        # Assert that creating this data raises a WriteError
+>       with pytest.raises(WriteError):
+E       Failed: DID NOT RAISE <class 'pymongo.errors.WriteError'>
+
+test/util/test_dao.py:129: Failed
+----------------------------------------- Captured stdout setup -----------------------------------------
+Connecting to collection test_users on MongoDB at url mongodb://root:root@mongodb:27017
+
+---------- coverage: platform linux, python 3.10.12-final-0 ----------
+Name                                Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------
+src/controllers/__init__.py             0      0   100%
+src/controllers/controller.py          31     31     0%   1-103
+src/controllers/taskcontroller.py      68     68     0%   1-139
+src/controllers/todocontroller.py      21     21     0%   1-40
+src/controllers/usercontroller.py      24     24     0%   1-46
+src/util/dao.py                        67     36    46%   37-38, 79-83, 101-118, 134-141, 156-162, 170-173
+src/util/validators.py                  7      4    43%   13-16
+-----------------------------------------------------------------
+TOTAL                                 218    184    16%
+
+======================================== short test summary info ========================================
+FAILED test/util/test_dao.py::test_create_unique_constraint_violation - Failed: DID NOT RAISE <class 'pymongo.errors.WriteError'>
+====================================== 1 failed, 4 passed in 0.44s ======================================
+
 ```
 
 ### Evaluation Statement
 
-[Your evaluation of the test results]
-
----
+4 out of 5 test cases pass. The focus of the testing has been the create method in the DAO object. There are no rows which are missing that relates to the create method, it means that the method is fully tested.
+The failed test case is related to the unique constraint.
 
 ## References
 
-Lecture 1
-Lecture 2
-Lecture 3
+- Lecture 1
+- Lecture 2
+- Lecture 3
 
 ## Appendix
 
