@@ -20,8 +20,9 @@ For assignment 2:
 For assignment 3:
 
 - Team Member 1: Wrote answers to text questions.
-- Team Member 2: Did part 2.
-- Team Member 1: Reviewed it and made minor changes.
+- Team Member 2: Started to design test cases. 
+- Team Member 1: Mocked the validator and wrote initial test cases.
+- Team Member 2: Completed test cases, refactored slightly and completed written assignment.
 
 # Assignment 1: The Test Design Technique
 
