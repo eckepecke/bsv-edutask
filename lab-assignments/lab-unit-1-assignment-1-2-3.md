@@ -143,17 +143,18 @@ This structured approach helps create comprehensive test suites to verify system
 - **Boundary values analysis**: -1,0,1, 119, 120, 121, 17, 18, 19
 
 **Test Cases:**  
-| Value | Expected Result |  
-|-------|-----------------|  
-| -1 | Impossible |  
-| 0 | Underage |  
-| 1 | Underage |  
-| 17 | Underage |  
-| 18 | Valid |  
-| 19 | Valid |  
-| 119 | Valid |  
-| 120 | Valid |  
-| 121 | Impossible |
+
+| Value | Expected Result |     |
+| ----- | --------------- | --- |
+| -1    | Impossible      |     |
+| 0     | Underage        |     |
+| 1     | Underage        |     |
+| 17    | Underage        |     |
+| 18    | Valid           |     |
+| 19    | Valid           |     |
+| 119   | Valid           |     |
+| 120   | Valid           |     |
+| 121   | Impossible      |     |
 
 **Conclusion**: Combining BVA and EP ensures coverage of edge cases and minimizes redundant testing.
 
@@ -301,21 +302,6 @@ Unit testing verifies that a single component (e.g., a class, method, or functio
 Mocking in integration testing, is used to isolate external systems or control the environment (like simulating a third-party API or a database), not the code units themselves. The goal in integration testing is to test how multiple components work together, but still may avoid hitting real external systems to improve test reliability and speed.
 
 ## 2. Integration Testing for DAO and MongoDB
-
-Integration testing becomes especially relevant when working with external systems: we can assume that the MongoDB––a widely used database—has undergone sufficient unit testing. However, that does not assure that the communication between our server and the Mongo database works correctly. The data access object (DAO) encapsulates the communication between any component of the EduTask system and the Mongo database. We want to assure that this communication works as specified, such that we can rely on our database operations. For this assignment, we will focus on the create method in the DAO object (src/util/dao.py).
-
-Creating a new object in a collection of a Mongo database is regulated by validators, which constrain the otherwise very unrestricted process of inserting items into a Mongo database1.
-
-**We want to make sure that—given a configuration specified in a validator—the object creation process will succeed only if the input data is compliant to the validators.**
-
-**Design and implement integration tests for the communication between the data access object DAO (backend/src/util/dao.py) and the Mongo database focusing on the create method. Follow best practices for integration test design and utilize mocking where applicable.**
-
-Deliverables: The submission to this exercise must contain all of the following:
-
-1. A list of test cases which have been derived using the test design technique.
-2. A pytest fixture allowing interaction with the database without disturbing production code or data.
-3. An implementation of the test cases in pytest. Provide a link to the file(s) in your forked repository, which contains your test code.
-4. A brief report about the results of test execution, consisting of pytest’s console output and a brief statement evaluating it.
 
 ### List of Test Cases
 
