@@ -23,3 +23,30 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('login', () => {
+    cy.fixture('user.json').then((user) => {
+      // First create the user via API
+      cy.request({
+        method: 'POST',
+        url: 'http://localhost:5000/users/create',
+        form: true,
+        body: user
+      }).then(() => {
+        // Now visit the login page
+        cy.visit('http://localhost:3000'); // Adjust this URL to your login page
+        
+        // Fill in the email field
+        cy.contains('div', 'Email Address')
+          .find('input[type=text]')
+          .type(user.email);
+        
+        // Submit the form
+        cy.get('form').submit();
+        
+        // Wait for login to complete
+        const name = user.firstName + ' ' + user.lastName;
+        cy.get('h1').should('contain.text', 'Your tasks, ' + name);
+      });
+    });
+  });
