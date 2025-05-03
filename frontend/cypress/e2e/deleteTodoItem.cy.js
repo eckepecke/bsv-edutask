@@ -24,7 +24,6 @@ describe('Add task in detailed view', () => {
               cy.get('input#title').type(testTitle);
               cy.get('input[type=submit]').click();
               cy.get('div.title-overlay').contains(testTitle).click();
-              cy.log('beforeEach');
             });
           });
         });

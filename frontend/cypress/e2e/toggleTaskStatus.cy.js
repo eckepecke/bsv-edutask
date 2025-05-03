@@ -96,7 +96,6 @@ describe('Add task in detailed view', () => {
         .parents('li.todo-item')
         .find('span.editable')
         .should('not.have.css', 'text-decoration', 'line-through solid rgb(49, 46, 46)');
-        
 
         // First check that the task isn't completed initially
         cy.get('li.todo-item').contains('Watch video')
