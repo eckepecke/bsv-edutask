@@ -4,19 +4,6 @@ from unittest.mock import patch, MagicMock
 from src.controllers.usercontroller import UserController
 
 
-# Test cases
-
-# Email        | Format    | Exists    | Outcome
-# ---------------------------------------------
-# Provided     | Correct   | Yes, once | User returned
-# Provided     | Correct   | Yes, more | User returned
-# Provided     | Correct   | No        | None returned
-# Provided     | Incorrect | -         | ValueError raised
-# Not provided | -         | -         | ValueError raised
-# --------------------------------------------------------
-# Database operation fails             | Exception raised
-
-
 @pytest.fixture
 def mock_user_controller():
     mock_dao = MagicMock()
