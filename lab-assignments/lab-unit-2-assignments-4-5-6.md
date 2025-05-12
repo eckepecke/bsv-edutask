@@ -30,27 +30,32 @@ For Assignment 6:
 
 #### R8UC1: Create Todo Items
 
-| Test Case ID | Action | Conditions | Expected Outcome |
-| ------------ | ------ | ---------- | ---------------- |
-| TC-R8UC1-01  | [Action] | [Condition values] | [Outcome] |
-| TC-R8UC1-02  | [Action] | [Condition values] | [Outcome] |
-| ... | ... | ... | ... |
+Preconditions: The user is authenticated, has at least one task associated to his account, and
+views this task in detail view mode.
+
+| Test | Condition       | Action          | Outcome                                 |
+| ---- | --------------- | --------------- | --------------------------------------- |
+| 1    | Field empty     | User clicks Add | Nothing happens, Add button is disabled |
+| 2    | Field not empty | User clicks Add | Active task created at bottom of list   |
 
 #### R8UC2: Toggle Todo Items
 
-| Test Case ID | Action | Conditions | Expected Outcome |
-| ------------ | ------ | ---------- | ---------------- |
-| TC-R8UC2-01  | [Action] | [Condition values] | [Outcome] |
-| TC-R8UC2-02  | [Action] | [Condition values] | [Outcome] |
-| ... | ... | ... | ... |
+Preconditions: The user is authenticated, has at least one task with at least one todo item
+associated to his account, and views this task in detail view mode.
+
+| Test | Condition      | Action           | Outcome          |
+| ---- | -------------- | ---------------- | ---------------- |
+| 1    | Task is active | User clicks icon | Status -> Done   |
+| 2    | Task is done   | user clicks icon | Status -> Active |
 
 #### R8UC3: Delete Todo Items
 
-| Test Case ID | Action | Conditions | Expected Outcome |
-| ------------ | ------ | ---------- | ---------------- |
-| TC-R8UC3-01  | [Action] | [Condition values] | [Outcome] |
-| TC-R8UC3-02  | [Action] | [Condition values] | [Outcome] |
-| ... | ... | ... | ... |
+Preconditions: The user is authenticated, has at least one task with at least one todo item
+associated to his account, and views this task in detail view mode.
+
+| Test | Status | Action             | Outcome      |
+| ---- | ------ | ------------------ | ------------ |
+| 1    | Active | User clicks x-icon | Item deleted |
 
 ### Implementation of Test Cases using Cypress
 
@@ -58,63 +63,143 @@ For Assignment 6:
 
 ### Test Execution Results
 
-[Insert screenshot of test execution here]
+## Adding to do item
+
+### Test case 1
+
+Output shows that the first test passed. Adding an item with content in the input field is creating a new todo-item.
+![Alt text](../cypress_screenshots/add_item_success.png)
+
+### Test case 2
+
+Output shows that the Add button is not disabled when input field is empty.
+![Alt text](../cypress_screenshots/add_item_fail.png)
+
+## Toggling existing item
+
+### Test case 1 and 2
+
+Output shows that toggling to "Done" is working.
+
+![Alt text](../cypress_screenshots/toggle_part_1.png)
+
+![Alt text](../cypress_screenshots/toggle_part_2.png)
+
+Output shows that toggling back to active is also working.
+![Alt text](../cypress_screenshots/toggle_part_3.png)
+
+## Removing item
+
+### Test case 1
+
+Output shoes that item is removed successfully.
+![Alt text](../cypress_screenshots/remove_item.png)
 
 **Test Execution Report:**
 
 [Brief report on test execution, including any failures detected]
 
-## 2. Declarative vs. Imperative UI Testing
+# Assignment 5. Declarative vs. Imperative UI Testing
 
-### Explanation of Declarative and Imperative UI Test Case Implementation
+## Imperative (White-Box) Testing
 
-[Explanation of the concepts with examples]
+In imperative UI testing, tests explicitly define how to locate and interact with elements by relying on the application’s internal structure (e.g., DOM hierarchy, CSS classes, IDs, or XPaths). For example:
 
-### Discussion on Applicability in UI Testing
+```javascript
+cy.get('#login-form > input[type="email"]').type("user@example.com");
+```
 
-[Discussion of which approach is most applicable for UI testing and why]
+Here, the test directly references specific DOM properties. This approach requires knowledge of the implementation details, making it brittle—if the UI structure changes (e.g., a CSS class is renamed), the test breaks.
+
+## Declarative (Black-Box) Testing
+
+Declarative tests focus on what the user sees and interacts with, abstracting away implementation details. Elements are identified by their visible characteristics, such as text, labels, ARIA roles, or semantic HTML tags. For example:
+
+```javascript
+cy.findByRole("button", { name: "Submit" }).click();
+```
+
+This mimics how a user navigates the UI, relying on attributes like button labels. Tests become resilient to structural changes (e.g., CSS renames) as long as the visible behavior remains consistent.
+
+# 2. Discussion: Which Approach is Most Applicable for UI Testing?
+
+## Declarative Testing is Generally Preferable
+
+UI tests aim to verify that the application behaves correctly from the user’s perspective. Declarative tests align with this goal by using the same cues (e.g., button labels, form placeholders) that guide real users.
+
+Imperative tests tightly couple to the DOM structure, making them prone to breaking during refactoring (e.g., changing a `<div id="submit"> to <button class="submit-btn">`). Declarative tests avoid this by depending on stable, user-facing attributes.
+
+Tests written declaratively are easier to understand and modify because they reflect the intent of the interaction (e.g., “click the ‘Login’ button”) rather than technical details.
+
+Conclusion
+Declarative testing should probably be the standard approach for UI automation, as it prioritizes user experience and reduces maintenance costs.
 
 # Assignment 5: Non-functional Testing
 
-## 1. Qualities
+## Explanation why definition of quality is necessary
 
-### Why Explicit Definition of Quality is Necessary Before Testing
+Different systems serve different purposes, so the concept of quality can vary widely depending on the context. In a game application, quality might relate to the user experience. For example, how engaging or enjoyable the game is, or to technical aspects such as frame rate (FPS) and responsiveness.s. On an online poker site, framerate does not matter. Quality would instead refer to perhaps stability, making sure that users are not disconnected during play.
 
-[Explanation of why an explicit definition is necessary]
+Given that quality can take many different forms, it becomes essential to decide what it means. If you dont pin-point what quality is, testing becomes difficult since there is no clear aim for test-engineers to work with.
 
-### Explicit Definitions of Three Qualities
+## Explanation of three qualities
 
-#### Quality 1: [Choose from: accessibility, evolvability, interoperability, maintainability, reliability, safety]
+### Reliability
 
-[Explicit definition with sources]
+Reliability is the ability of software to perform its tasks under certain conditions for a certain amount of time without failing. For example:
 
-#### Quality 2: [Choose from the list]
+- **Probability of failure-free operation**: Depending on the context, the threshold for reliability can vary.
 
-[Explicit definition with sources]
+  - In a **video streaming platform**, a 90% success rate (0.9) might be considered acceptable, as occasional buffering or failure to load may not have critical consequences.
 
-#### Quality 3: [Choose from the list]
+  - In a **flight navigation system** or a **medical monitoring device**, even a 99% success rate (0.99) could be unacceptable, since failures may lead to life-threatening situations.
 
-[Explicit definition with sources]
+- **The ability to recover from failures**: A reliable system should not crash or become unusable due to common or expected issues, such as invalid user input. Instead, it should handle such cases gracefully. For example:
+
+  - If a user enters an invalid data type (e.g., text instead of a number), the system should display an error message and prompt for the correct input, rather than crashing.
+
+  - In a payment processing system, if a network connection fails mid-transaction, the system should be able to detect the failure and either retry the request or roll back the transaction to ensure consistency.
+
+  - In a web application, if a backend service is temporarily unavailable, the system might display a friendly error message and automatically attempt to reconnect.
+
+### Maintainability
+
+Maintainability refers to how easy it is to modify, correct,defect, improve performance etc. Some examples are:
+
+- Code readability
+- Component independence and modularity
+- Documentation quality
+- How difficult it is to identify and fix defects
+
+### Accessibility
+
+Accessibility is the degree to which software can be used by people with the widest range of capabilities. This includes:
+
+- Compliance with established accessibility standards (such as WCAG) to ensure inclusive design.
+- Compatibility with tools like screen readers, speech recognition software, screen magnifiers, and alternative input devices.
+- Clear, consistent, and simple UI design that supports keyboard navigation, high contrast modes, text resizing, not relying solely on color or visual cues.
 
 ### Potential Test Techniques for Each Quality
 
-#### Test Technique for Quality 1:
+#### Test Technique for Reliabiltiy:
 
-[Description of technique and how it would be implemented]
+One way ot test the reliability of the system would be to introduce invalid inputs, trying to break the system. If the system is not taking inputs one might consider a stresstest, putting the system under a heavy workload to see where the breaking points are.
 
-#### Test Technique for Quality 2:
+#### Test Technique for Maintainability:
 
-[Description of technique and how it would be implemented]
+There are various tools for testing this quality, such as, Scrutinizer. Used for code analysis, focusing on maintainability, complexity, duplication, and adherence to best practices. Scrutinizer supports multiple languages, but there are also language specific alternatives that one might choose.
 
-#### Test Technique for Quality 3:
+#### Test Technique for Accesibility:
 
-[Description of technique and how it would be implemented]
+Google Lighthouse is an easy way to test accessability ang get quick feedback on how to improve it.
 
 ## 2. Static Testing
 
 ### Explanation of Static Test Techniques vs. Dynamic Test Techniques
 
-[Explanation of the differences between static and dynamic test techniques]
+**Static test techniques** are techniques applied to the SUT without executing the code. This could be using tools like static code analyzers, linters, code review tools, and documentation reviewers. Specific examples include tools such as SonarQube, or code linters (ESlint etc). This type of analysis could also be done manually with code reviews.
+
+**Dynamic test techniques** are applied to the SUT while the application is running. This could be tools like test execution frameworks, performance monitors, debuggers, coverage analyzers and accessibility checkers. Exploratory testing and user testing are examples of Dynamic Manual Techniques.
 
 ### Static Code Review of EduTask System
 
