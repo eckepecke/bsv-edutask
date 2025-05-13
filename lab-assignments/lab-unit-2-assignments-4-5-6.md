@@ -205,11 +205,23 @@ Google Lighthouse is an easy way to test accessability ang get quick feedback on
 
 #### Extensibility Evaluation
 
-[Static code review of the EduTask system focusing on extensibility]
+The system makes consistent use of dependency injection in its controller layer. Each controller class receives its DAO(s) as constructor parameters, allowing different data access objects to be injected at runtime. This design improves testability, and reduces coupling, which in turn improves the extensibility. New controllers and resource types can be added with minimal changes to the existing architecture.
+
+The DAO class is very nice, it allows for an easy way to store new types of resources in MongoDB. The system has a nice modularity with a lot of classes using dependency injection.
 
 #### Evaluation of Adding Medium Articles as a Resource Type
 
-[Evaluation of the system's extensibility regarding the proposed change]
+As mentioned above the DAO class already allows for adding new types of resources.
+
+Sadly, the TaskController logic is tightly coupled to Youtube videos.
+
+```
+            video = self.videos_dao.create({'url': data['url']})
+            del data['url']
+            data['video'] = ObjectId(video['_id']['$oid'])
+```
+
+This code from the create() method assumes a video Dao, stores the resource in a video field and so on. There is no support here for multiple resource types. Similar problems arise in the populate_task() method. To support future resource types this section should be refactored to assume a resource and not a video.
 
 # Assignment 6: Continuous Integration
 
