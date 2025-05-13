@@ -2,15 +2,15 @@
 
 ## Team Information
 
-- Team Member 1: [Name]
-- Team Member 2: [Name]
+- Team Member 1: Erik O.
+- Team Member 2: Karl W.
 
 ## Work Distribution
 
 For Assignment 4:
 
-- Team Member 1: [Contributions]
-- Team Member 2: [Contributions]
+- Team Member 1: Erik O. made the majority of the assignment. 
+- Team Member 2: Karl W. reviewed the hand-in and code, complemented the written text somewhat. Claude (a LLM-model) was used to refactor some of the code.
 
 For Assignment 5:
 
@@ -28,7 +28,7 @@ For Assignment 6:
 
 ### List of Test Cases for Requirement 8
 
-#### R8UC1: Create Todo Items
+#### R8UC1: Create Todo Items 
 
 Preconditions: The user is authenticated, has at least one task associated to his account, and
 views this task in detail view mode.
@@ -59,25 +59,27 @@ associated to his account, and views this task in detail view mode.
 
 ### Implementation of Test Cases using Cypress
 
-[Link to Cypress test code in repository: https://github.com/username/repo/path/to/tests]
+[Link to Cypress test code in repository: https://github.com/eckepecke/bsv-edutask/tree/master/frontend/cypress/e2e]
 
 ### Test Execution Results
 
-## Adding to do item
+#### Adding to do item : addTaskInDetailedView.cy.js / R8UC1
 
-### Test case 1
+##### Test case 1
 
 Output shows that the first test passed. Adding an item with content in the input field is creating a new todo-item.
+
 ![Alt text](../cypress_screenshots/add_item_success.png)
 
-### Test case 2
+##### Test case 2 
 
 Output shows that the Add button is not disabled when input field is empty.
+
 ![Alt text](../cypress_screenshots/add_item_fail.png)
 
-## Toggling existing item
+#### Toggling existing item : toggleTask.cy.js / R8UC2
 
-### Test case 1 and 2
+##### Test case 1 and 2
 
 Output shows that toggling to "Done" is working.
 
@@ -88,9 +90,9 @@ Output shows that toggling to "Done" is working.
 Output shows that toggling back to active is also working.
 ![Alt text](../cypress_screenshots/toggle_part_3.png)
 
-## Removing item
+#### Removing item : deleteTodoItem.cy.js / R8UC3
 
-### Test case 1
+##### Test case 1
 
 Output shoes that item is removed successfully.
 ![Alt text](../cypress_screenshots/remove_item.png)
@@ -99,9 +101,11 @@ Output shoes that item is removed successfully.
 
 [Brief report on test execution, including any failures detected]
 
-# Assignment 5. Declarative vs. Imperative UI Testing
+## 2. Declarative vs. Imperative UI Testing
 
-## Imperative (White-Box) Testing
+### 2.1 Exokanation
+
+#### Imperative (White-Box) Testing
 
 In imperative UI testing, tests explicitly define how to locate and interact with elements by relying on the application’s internal structure (e.g., DOM hierarchy, CSS classes, IDs, or XPaths). For example:
 
@@ -111,7 +115,7 @@ cy.get('#login-form > input[type="email"]').type("user@example.com");
 
 Here, the test directly references specific DOM properties. This approach requires knowledge of the implementation details, making it brittle—if the UI structure changes (e.g., a CSS class is renamed), the test breaks.
 
-## Declarative (Black-Box) Testing
+#### Declarative (Black-Box) Testing
 
 Declarative tests focus on what the user sees and interacts with, abstracting away implementation details. Elements are identified by their visible characteristics, such as text, labels, ARIA roles, or semantic HTML tags. For example:
 
@@ -121,9 +125,9 @@ cy.findByRole("button", { name: "Submit" }).click();
 
 This mimics how a user navigates the UI, relying on attributes like button labels. Tests become resilient to structural changes (e.g., CSS renames) as long as the visible behavior remains consistent.
 
-# 2. Discussion: Which Approach is Most Applicable for UI Testing?
+### 2.2 Discussion: Which Approach is Most Applicable for UI Testing?
 
-## Declarative Testing is Generally Preferable
+#### Declarative Testing is Generally Preferable
 
 UI tests aim to verify that the application behaves correctly from the user’s perspective. Declarative tests align with this goal by using the same cues (e.g., button labels, form placeholders) that guide real users.
 
