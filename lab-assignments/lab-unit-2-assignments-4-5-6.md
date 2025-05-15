@@ -103,7 +103,7 @@ Output shoes that item is removed successfully.
 
 ## 2. Declarative vs. Imperative UI Testing
 
-### 2.1 Exokanation
+### 2.1 Explanation
 
 #### Imperative (White-Box) Testing
 
@@ -135,7 +135,8 @@ Imperative tests tightly couple to the DOM structure, making them prone to break
 
 Tests written declaratively are easier to understand and modify because they reflect the intent of the interaction (e.g., “click the ‘Login’ button”) rather than technical details.
 
-Conclusion
+**Conclusion**
+
 Declarative testing should probably be the standard approach for UI automation, as it prioritizes user experience and reduces maintenance costs.
 
 # Assignment 5: Non-functional Testing
@@ -175,6 +176,8 @@ Maintainability refers to how easy it is to modify, correct,defect, improve perf
 - Documentation quality
 - How difficult it is to identify and fix defects
 
+To propose some explicit metrics related to above, some examples used in the DBWEBB courses are: linting compliance (compliance to certain code standards with regards to e.g. naming of variables / functions, required docstrings, avoiding certain code constructs, etc.), metric on cyclomatic complexity, cohesion / coupling metrics, code duplication metrics. Some courses have had a requirement for automatic testing with a CI pipeline.  
+
 ### Accessibility
 
 Accessibility is the degree to which software can be used by people with the widest range of capabilities. This includes:
@@ -195,13 +198,13 @@ There are various tools for testing this quality, such as, Scrutinizer. Used for
 
 #### Test Technique for Accesibility:
 
-Google Lighthouse is an easy way to test accessability ang get quick feedback on how to improve it.
+Google Lighthouse is an easy way to test accessability ang get quick feedback on how to improve it. Google Lighthouse can be runned in the browser, from command line or as a node module, making it possible to integrate in an automated testing environment. 
 
 ## 2. Static Testing
 
 ### Explanation of Static Test Techniques vs. Dynamic Test Techniques
 
-**Static test techniques** are techniques applied to the SUT without executing the code. This could be using tools like static code analyzers, linters, code review tools, and documentation reviewers. Specific examples include tools such as SonarQube, or code linters (ESlint etc). This type of analysis could also be done manually with code reviews.
+**Static test techniques** are techniques applied to the system under test (SUT) without executing the code. This could be using tools like static code analyzers, linters, code review tools, and documentation reviewers. Specific examples include tools such as SonarQube, or code linters (ESlint etc). This type of analysis could also be done manually with code reviews.
 
 **Dynamic test techniques** are applied to the SUT while the application is running. This could be tools like test execution frameworks, performance monitors, debuggers, coverage analyzers and accessibility checkers. Exploratory testing and user testing are examples of Dynamic Manual Techniques.
 
@@ -253,7 +256,7 @@ This code from the create() method assumes a video Dao, stores the resource in a
 
 ## References
 
-- [Reference 1]
+- On Google Lighthouse: https://developer.chrome.com/docs/lighthouse/overview
 - [Reference 2]
 - [Reference 3]
 - ...
