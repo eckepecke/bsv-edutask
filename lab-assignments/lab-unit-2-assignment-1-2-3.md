@@ -45,16 +45,17 @@ Output shows that the Add button is not disabled when input field is empty.
 
 ## Toggling existing item
 
-### Test case 1 and 2
+### Test case 1
 
 Output shows that toggling to "Done" is working.
 
-![Alt text](../cypress_screenshots/toggle_part_1.png)
+![Alt text](../cypress_screenshots/test_1.png)
 
-![Alt text](../cypress_screenshots/toggle_part_2.png)
+### Test case 2
 
-Output shows that toggling back to active is also working.
-![Alt text](../cypress_screenshots/toggle_part_3.png)
+Output shows that toggling from done back to active is working.
+
+![Alt text](../cypress_screenshots/test_2.png)
 
 ## Removing item
 
