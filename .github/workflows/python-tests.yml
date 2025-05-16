@@ -6,6 +6,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      mongo:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongosh --eval 'db.runCommand(\"ping\").ok'" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=5
+
     defaults:
       run:
         working-directory: backend
@@ -24,6 +35,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.pip
           pip install pytest pytest-timeout
+
+      - name: Wait for MongoDB to be ready
+        run: |
+          for i in {1..10}; do
+            nc -z localhost 27017 && echo "Mongo is up!" && break
+            echo "Waiting for MongoDB..."
+            sleep 3
+          done
 
       - name: Run tests with pytest
         run: pytest -v --durations=10 --timeout=30
