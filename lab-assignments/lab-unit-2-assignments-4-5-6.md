@@ -14,13 +14,13 @@ For Assignment 4:
 
 For Assignment 5:
 
-- Team Member 1: [Contributions]
-- Team Member 2: [Contributions]
+- Team Member 1: Erik O. started and made a first draft.
+- Team Member 2: Karl W. completed with additional details, esp. on the evaluation.
 
 For Assignment 6:
 
-- Team Member 1: [Contributions]
-- Team Member 2: [Contributions]
+- Team Member 1: Erik O. set up the initial workflow and got it running.
+- Team Member 2: Karl W. updated the workflow to focus only on unit testing and made the pull request with the fix. 
 
 # Assignment 4: GUI Testing
 
@@ -275,20 +275,17 @@ From an architectural point of view, in general, a document oriented database su
 
 ## 1. Continuous Integration of Backend Unit Tests
 
-### GitHub Workflow for Backend Unit Tests
+### 1. GitHub Workflow for Backend Unit Tests
 
 
 [Link to GitHub Workflow run that fails, where owner can run-run jobs: https://github.com/eckepecke/bsv-edutask/actions/runs/15065156237]
 
 [Link to GitHub Workflow file: https://github.com/eckepecke/bsv-edutask/blob/830a8b4e3cc73e436a607b4997e60ce12740039d/.github/workflows/python-tests.yml]
 
-### Pull Request to Fix get_user_by_email Method
+### 2. Pull Request to Fix get_user_by_email Method
 
 [Link to pull request: https://github.com/eckepecke/bsv-edutask/pull/1]
 
 ## References
 
 - On Google Lighthouse: https://developer.chrome.com/docs/lighthouse/overview
-- [Reference 2]
-- [Reference 3]
-- ...
