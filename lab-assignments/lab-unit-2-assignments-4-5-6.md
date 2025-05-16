@@ -277,7 +277,6 @@ From an architectural point of view, in general, a document oriented database su
 
 ### GitHub Workflow for Backend Unit Tests
 
-Question is raised on the link to the automatic execution of workflow. 
 
 [Link to GitHub Workflow run that fails, where owner can run-run jobs: https://github.com/eckepecke/bsv-edutask/actions/runs/15065156237]
 
