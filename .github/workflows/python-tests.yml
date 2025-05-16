@@ -25,4 +25,4 @@ jobs:
           pip install -r requirements.pip
 
       - name: Run tests with pytest
-        run: pytest
+        run: pytest -v --durations=10
