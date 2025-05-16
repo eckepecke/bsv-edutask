@@ -45,4 +45,4 @@ jobs:
           done
 
       - name: Run tests with pytest
-        run: pytest -v --durations=10 --timeout=30
+        run: pytest -v --durations=10 --timeout=30 test/test_*.py
