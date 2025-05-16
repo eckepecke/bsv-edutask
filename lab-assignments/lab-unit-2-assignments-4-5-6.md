@@ -277,23 +277,15 @@ From an architectural point of view, in general, a document oriented database su
 
 ### GitHub Workflow for Backend Unit Tests
 
-[Link to GitHub Workflow: https://github.com/username/repo/path/to/workflow]
+Question is raised on the link to the automatic execution of workflow. 
 
-**Description of the Workflow Implementation:**
+[Link to GitHub Workflow run that fails, where owner can run-run jobs: https://github.com/eckepecke/bsv-edutask/actions/runs/15065156237]
 
-[Explain how the workflow is set up and what it does]
+[Link to GitHub Workflow file: https://github.com/eckepecke/bsv-edutask/blob/830a8b4e3cc73e436a607b4997e60ce12740039d/.github/workflows/python-tests.yml]
 
 ### Pull Request to Fix get_user_by_email Method
 
-[Link to pull request: https://github.com/username/repo/pull/PR_Number]
-
-**Description of Changes Made:**
-
-[Explain what changes were made to fix the method and how they resolved the issues]
-
-**Evidence of Test Execution:**
-
-[Insert screenshot or description of successful test execution from the PR]
+[Link to pull request: https://github.com/eckepecke/bsv-edutask/pull/1]
 
 ## References
 
