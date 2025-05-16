@@ -210,13 +210,23 @@ Google Lighthouse is an easy way to test accessability ang get quick feedback on
 
 ### Static Code Review of EduTask System
 
-#### Extensibility Evaluation
+The assignment defines extensibility as "the ability of a system to be extended with new functionality with minimal or no effects on its internal structure and data flow". The task is to review the systems extensibility in regards to a proposed change, which is to add a different kind of resource (Medium-articles, on top of current YouTube videos). 
+
+The system architecture consists of three parts: 1) mongoDB (database), 2) Flask (backend) and 3) React (frontend). 
+
+This then implies that each of these components must be possible to extend with new functionality with minimal or no effects on its internal structure and data flow. 
+
+The task is to conduct a preliminary code review. Thus, the analysis will stay high level. The conclusion of the evaluation is that the proposed change would be difficult to implement, as the code is not extensible.  
+
+#### Backend
+
+##### Extensibility Evaluation
 
 The system makes consistent use of dependency injection in its controller layer. Each controller class receives its DAO(s) as constructor parameters, allowing different data access objects to be injected at runtime. This design improves testability, and reduces coupling, which in turn improves the extensibility. New controllers and resource types can be added with minimal changes to the existing architecture.
 
 The DAO class is very nice, it allows for an easy way to store new types of resources in MongoDB. The system has a nice modularity with a lot of classes using dependency injection.
 
-#### Evaluation of Adding Medium Articles as a Resource Type
+##### Evaluation of Adding Medium Articles as a Resource Type
 
 As mentioned above the DAO class already allows for adding new types of resources.
 
@@ -228,7 +238,38 @@ Sadly, the TaskController logic is tightly coupled to Youtube videos.
             data['video'] = ObjectId(video['_id']['$oid'])
 ```
 
-This code from the create() method assumes a video Dao, stores the resource in a video field and so on. There is no support here for multiple resource types. Similar problems arise in the populate_task() method. To support future resource types this section should be refactored to assume a resource and not a video.
+This code from the create() method assumes a video Dao, stores the resource in a video field and so on. There is no support here for multiple resource types. Similar problems arise in the populate_task() method. This holds trie for other methods as well, such s the delete_of_user and so on. To support future resource types this section should be refactored to assume a resource and not a video. 
+
+#### Frontend
+
+There are several issues with the frontend and its extensibility. For example, the TaskView.js UI is focused on YouTube and assumes that the content is YouTube videos with Thumbnails. 
+
+```
+    <div>
+      {tasks.length === 0 ?
+        <p>Here you find the space to organize the educational videos you are interested in and associate them with todo items. Start by pasting the view key of a YouTube video as well as a title of the task in the form below.</p>
+        : <p>Here you can find your {tasks.length} task{tasks.length === 1 ? '' : 's'}. Click on each thumbnail in the list to add, update, or delete the todo items you have associated to this video.</p>}
+      <div className='container'>
+        {tasks.map(task =>
+          <div className='container-element' key={task.id}>
+            <a onClick={() => { setTrigger(true); setFocus(task) }}>
+              <img src={`http://i3.ytimg.com/vi/${task.url}/hqdefault.jpg`} alt='' />
+              { task.done ? <div className="done-overlay"><div className="done-check"></div></div> : <div></div>}
+              <div className="title-overlay">{task.title}</div>
+            </a>
+          </div>)}
+
+        <div className='container-element' key='newtask'>
+          <TaskCreator userid={props.user._id} setTasks={setTasks} />
+        </div>
+```
+
+The Converter.js also assumes a video, as it attempts to access `taskobj.video.url`. 
+
+
+#### Database
+
+From an architectural point of view, in general, a document oriented database such as mongoDB could be strong in its capacity to be extensible. However, looking into the implementation here, taking an example of the validators (e.g. the task.json), they contain hard coded references to certain resource types (vidoes). This is not extensible.
 
 # Assignment 6: Continuous Integration
 
